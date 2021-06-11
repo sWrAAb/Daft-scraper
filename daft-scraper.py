@@ -22,6 +22,11 @@ def user_inputs():
     
     bedrooms = int(input('Bedrooms: '))
 
+    options = [    
+            PropertyTypesOption([property_type]),   
+            PriceOption(0, rent_range),
+            BedOption(1, bedrooms)            
+            ]
 
 
     api = DaftSearch(SearchType.RENT)
