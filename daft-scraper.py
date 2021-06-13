@@ -4,7 +4,6 @@ from daft_scraper.search.options import (
     PriceOption, BedOption
 )
 from daft_scraper.search.options_location import LocationsOption, Location
-import pandas as pd
 import csv
 
 
@@ -16,19 +15,22 @@ def inputs():
     if property_type.lower() == 'h':
         property_type = PropertyType.HOUSE
     elif property_type.lower() == 'a':
-        property_type = PropertyType.HOUSE
+        property_type = PropertyType.APARTMENT
     else:
         print('Invalid input. Please enter h for house or a for apartment.')
         property_type = input('House or Apartment (h/a)')
     
     rent_range = int(input('Maximum rent: '))
     
-    bedrooms = int(input('Bedrooms: '))
+    bedrooms = int(input('Number of bedrooms: '))
+
+    area = Location.DUBLIN_2_DUBLIN
 
     options = [    
             PropertyTypesOption([property_type]),   
             PriceOption(0, rent_range),
-            BedOption(1, bedrooms)            
+            BedOption(1, bedrooms),
+            LocationsOption([area])            
             ]
 
 
@@ -40,20 +42,26 @@ def inputs():
 def results(listings):
 
 
-    search_results = []
-
+    rows = []
 
     for listing in listings:
+        # Print results in terminal
         print("(" + str(getattr(listing, 'id')) + ")" + " €" + str(getattr(listing, 'price')) + " " + getattr(listing, 'title')+ "\n" + getattr(listing, 'url'))
-        search_results.append([getattr(listing, 'id'), getattr(listing, 'price'), getattr(listing, 'title'), getattr(listing, 'url')])
+        # Print results in csv file
+        rows.append([getattr(listing, 'id'), getattr(listing, 'price'), getattr(listing, 'title'), getattr(listing, 'url')])
 
-    return search_results
+    return rows
 
-def CSV_results(search_results):
-    search_details = ['id', 'price', 'address', 'url']  
-    with open('daft_search_results.csv', 'w') as f: 
-        write = csv.writer(f) 
-        write.writerow(search_details) 
-        write.writerows(search_results) 
+def print_results_to_csv(rows):
 
-CSV_results(results(inputs()))
+    #credits https://www.geeksforgeeks.org/python-save-list-to-csv/
+
+    with open('daft_search_results.csv', 'w') as f:    
+        fields = ['Id','Price','Address', 'Url']
+        # using csv.writer method from CSV package
+        write = csv.writer(f)    
+        write.writerow(fields)
+        write.writerows(rows)
+
+
+print_results_to_csv(results(inputs()))
