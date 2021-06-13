@@ -41,10 +41,15 @@ def inputs():
 
 def results(listings):
 
-
     rows = []
 
-    for listing in listings:
+    # Credits
+    # https://stackoverflow.com/questions/3766633/how-to-sort-with-lambda-in-python
+    # https://stackoverflow.com/questions/64016495/sorting-an-array-with-respect-to-values-of-an-other-array-one-after-the-other
+
+    sorted_list = sorted(list(listings), key=lambda a: a.price, reverse=False)
+
+    for listing in sorted_list:
         # Print results in terminal
         print("(" + str(getattr(listing, 'id')) + ")" + " €" + str(getattr(listing, 'price')) + " " + getattr(listing, 'title')+ "\n" + getattr(listing, 'url'))
         # Print results in csv file
