@@ -87,4 +87,5 @@ def print_results_to_csv(rows):
         # Write rows
         write.writerows(rows)
 
+# Prints result to csv file
 print_results_to_csv(results(inputs()))
