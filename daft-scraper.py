@@ -6,6 +6,11 @@ from daft_scraper.search.options import (
 )
 from daft_scraper.search.options_location import LocationsOption, Location
 import csv
+import datetime
+
+# Date and time now
+
+now = datetime.datetime.now()
 
 # Global variables
 
@@ -29,8 +34,8 @@ def inputs():
     # Maximum rent
     rent_range = int(input('Maximum rent: '))
     
-    # Number of bedrooms
-    bedrooms = int(input('Number of bedrooms: '))
+    # Maximum number of bedrooms
+    bedrooms = int(input('Maximum number of bedrooms: '))
 
     # CCT college area
     area = Location.DUBLIN_2_DUBLIN
@@ -59,12 +64,12 @@ def results(listings):
 
     for listing in sorted_list:
         # Print results in terminal
-        print("(" + str(getattr(listing, 'id')) + ")" + " €" + str(getattr(listing, 'price')) + " " + getattr(listing, 'title')+ "\n" + getattr(listing, 'url'))
+        print(now.strftime("%d-%m-%Y %H:%M") + ' ' + str(getattr(listing, 'id')) + " " + " €" + str(getattr(listing, 'price')) + " " + getattr(listing, 'title')+ "\n" + getattr(listing, 'url'))
         # Print results in csv file
-        rows.append([getattr(listing, 'id'), getattr(listing, 'price'), getattr(listing, 'title'), getattr(listing, 'url')])
+        rows.append([now.strftime("%d-%m-%Y %H:%M"),getattr(listing, 'id'), getattr(listing, 'price'), getattr(listing, 'title'), getattr(listing, 'url')])
 
     if not rows:
-        print("\n No results match your search criteria")
+        print("\n No results match your search criteria!\n")
 
     return rows
 
@@ -74,7 +79,7 @@ def print_results_to_csv(rows):
 
     with open('daft_search_results.csv', 'w') as f: 
         # Columns   
-        fields = ['Id','Price','Address', 'Url']
+        fields = ['Time','Id','Price','Address', 'Url']
         # using csv.writer method from CSV package
         write = csv.writer(f)    
         # Write columns
@@ -83,4 +88,3 @@ def print_results_to_csv(rows):
         write.writerows(rows)
 
 print_results_to_csv(results(inputs()))
-
