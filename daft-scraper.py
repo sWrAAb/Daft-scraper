@@ -22,14 +22,14 @@ def inputs():
     global listings
 
     # Property type
-    property_type = input('House or Apartment (h/a)')
+    property_type = input('House or Apartment (h/a): ')
     if property_type.lower() == 'h':
         property_type = PropertyType.HOUSE
     elif property_type.lower() == 'a':
         property_type = PropertyType.APARTMENT
     else:
         print('Invalid input. Please enter h for house or a for apartment.')
-        property_type = input('House or Apartment (h/a)')
+        property_type = input('House or Apartment (h/a): ')
 
     # Maximum rent
     rent_range = int(input('Maximum rent: '))
